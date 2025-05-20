@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - {fileID: 11400000, guid: 90320db2fb549e845b89321ad8515d09, type: 2}
-  choises:
-  - choiseText: Yes
+  - {fileID: 11400000, guid: b61f67c059179984f95030c92f55d737, type: 2}
+  choices:
+  - choiceText: Yes
     nextNode: {fileID: 0}
-  - choiseText: No
+  - choiceText: No
     nextNode: {fileID: 0}
   nextScene: 

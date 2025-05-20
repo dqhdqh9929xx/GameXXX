@@ -6,13 +6,13 @@ using UnityEngine;
 public class DialogueNode : ScriptableObject
 {
     public DialogueLine[] lines;
-    public Choise[] choises;
+    public Choice[] choices;
     public string nextScene;
 }
 
 [System.Serializable]
-public class Choise
+public class Choice
 {
-    public string choiseText;
+    public string choiceText; // The text that will be displayed on the button
     public DialogueNode nextNode;
 }

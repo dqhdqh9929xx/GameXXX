@@ -9,6 +9,8 @@ public class DialogueLine : ScriptableObject
     [TextArea(3, 5)] public string text;
     public Sprite speakerSprite;
 
+    public Sprite characterSprites;
+
     public DialogTarget targetImage;
 
     [Header("Audio")]
@@ -16,7 +18,7 @@ public class DialogueLine : ScriptableObject
     public AudioClip moorOrEffect;
 
     [Header("Animation")]
-    public float animationDuration;
+    public float animationDuration = 1;
     public DialogueAnimation animationType;
 }
 
@@ -36,4 +38,5 @@ public enum DialogueAnimation
     Shaking,
     Scaling,
     Rotating,
+    
 }

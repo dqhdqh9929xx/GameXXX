@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e0ffb54c456d7c4ea0bbd776791a4a9, type: 3}
-  m_Name: Act1-Line1
+  m_Name: Act1-Line2
   m_EditorClassIdentifier: 
   speakerName: Nobody
-  text: "Ch\xE0o M\u1EEBng \u0110\u1EBFn V\u1EDBi B\xECnh Nguy\xEAn V\xF4 T\u1EADn"
+  text: "Pick Ys \u0111i th\u1EB1ng ngu"
   speakerSprite: {fileID: 0}
   characterSprites: {fileID: 21300000, guid: 5cec01c6c715fb84dbd40a87f1e60756, type: 3}
   targetImage: 1
