@@ -22,9 +22,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Image leftImage;
     [SerializeField] Image rightImage;
     [SerializeField] Image centreImage;
-    [SerializeField] bool deActivateLeftImage; // for Debug
-    [SerializeField] bool deActivateRightImage; // for Debug
-    [SerializeField] bool deActivateCentreImage; // for Debug
+
 
     [Header("Audio")]
     public AudioSource voiceAudioSource;
@@ -33,7 +31,7 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Setting")]
     [SerializeField] float textSpeed = 0.05f; // Speed of Text
-    [SerializeField] float typingSpeed = 0.05f;
+    //[SerializeField] float typingSpeed = 0.05f;
     DialogueNode currentNode;
     int currentLineIndex = 0;
     bool isTyping = false;
@@ -46,9 +44,6 @@ public class DialogueManager : MonoBehaviour
         // Add listener to the progress button
         progressButton.onClick.AddListener(OnClickAdvance);
         // Hide the progress button
-        if (leftImage != null && deActivateLeftImage) leftImage.color = new Color32(255, 255, 255, 0);
-        if (rightImage != null && deActivateRightImage) rightImage.color = new Color32(255, 255, 255, 0);
-        if (centreImage != null && deActivateCentreImage) centreImage.color = new Color32(255, 255, 255, 0);
     }
 
     public void StartDialogue(DialogueNode startNode)
@@ -64,6 +59,7 @@ public class DialogueManager : MonoBehaviour
         if (currentNode == null || currentNode.lines.Length == 0)
         {
             // End Dialogue Here
+            EndDialogue();
             return;
         }
 
@@ -72,6 +68,14 @@ public class DialogueManager : MonoBehaviour
         {
             DialogueLine line = currentNode.lines[currentLineIndex];
             speakerNametext.text = line.speakerName;
+
+            // Nếu đúng node 1 và dòng thứ 2:
+            if ( currentLineIndex == 1)
+            {
+                // Chạy animation "rotate" cho rightImage
+                Playanimation(DialogueAnimation.Rotating, rightImage);
+                Debug.Log("Đã chạy animation 'rotate' cho rightImage");
+            }
 
             // Target Image to be placed from line
             Image targetImage = GetTargetImage(line.targetImage);
@@ -111,6 +115,7 @@ public class DialogueManager : MonoBehaviour
         // Perform Ana animation based on line settings
         if (line.animationType != DialogueAnimation.None)
         {
+            Playanimation(line.animationType, targetImage);
             // Play Animation
             yield return new WaitForSeconds(line.animationDuration);
         }
@@ -223,6 +228,76 @@ public class DialogueManager : MonoBehaviour
             choicePanel.SetActive(false);
             StartDialogue(choice.nextNode);
         }
+        else
+        {
+            EndDialogue();
+        }
+    }
+
+    void EndDialogue()
+    {
+        dialoguePanel.SetActive(false);
+        choicePanel.SetActive(false);
+        dialogueText.text = "";
+        speakerNametext.text = "";
+        if (voiceAudioSource.isPlaying)
+        {
+            voiceAudioSource.Stop();
+        }
+        if (musicAudioSource.isPlaying)
+        {
+            musicAudioSource.Stop();
+        }
+        Debug.Log("End of Dialogue");
+        // Transition to another scene if needed
+        if (!string.IsNullOrEmpty(currentNode.nextScene))
+        {
+            SceneTransitionManager.Instance.LoadSceneWithFade(currentNode.nextScene);
+        }
+    }
+
+    void Playanimation (DialogueAnimation animationType, Image targetImage)
+    {
+        if (targetImage == null) return;
+        // Get the Animator component
+        Animator animator = targetImage.GetComponent<Animator>();
+        if (animator != null) return;
+
+        // Trigger the correct animation
+        switch (animationType)
+        {
+            case DialogueAnimation.LeftEnteringScene:
+                animator.SetTrigger("leftenter");
+                break;
+            case DialogueAnimation.LeftExitingScene:
+                animator.SetTrigger("leftexit");
+                break;
+            case DialogueAnimation.RightEnteringScene:
+                animator.SetTrigger("rightenter");
+                break;
+            case DialogueAnimation.RightExitingScene:
+                animator.SetTrigger("rightexit");
+                break;
+            case DialogueAnimation.Jumping:
+                animator.SetTrigger("jumping");
+                break;
+            case DialogueAnimation.Shaking:
+                animator.SetTrigger("shake");
+                break;
+            case DialogueAnimation.Scaling:
+                animator.SetTrigger("scale");
+                break;
+            case DialogueAnimation.Rotating:
+                animator.SetTrigger("rotate");
+                break;
+            case DialogueAnimation.Floating:
+                animator.SetTrigger("float");
+                break;
+            default:
+                Debug.LogWarning("No animation found for this type: " + animationType);
+                break;
+        }
+
     }
 
 }

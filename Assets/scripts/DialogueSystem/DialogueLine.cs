@@ -32,11 +32,14 @@ public enum DialogTarget
 public enum DialogueAnimation
 {
     None,
-    EnteringScene,
-    ExitingScene,
+    LeftEnteringScene,
+    LeftExitingScene,
+    RightExitingScene,
+    RightEnteringScene,
     Jumping,
     Shaking,
     Scaling,
     Rotating,
-    
+    Floating,
+
 }
