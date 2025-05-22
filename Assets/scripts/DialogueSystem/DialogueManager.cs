@@ -36,6 +36,9 @@ public class DialogueManager : MonoBehaviour
     int currentLineIndex = 0;
     bool isTyping = false;
 
+    
+
+
 
     void Start()
     {
@@ -51,7 +54,10 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(true);
         currentNode = startNode;
         currentLineIndex = 0;
+       
+
         DisplayCurrentLine();
+
     }
 
     void DisplayCurrentLine()
@@ -69,18 +75,18 @@ public class DialogueManager : MonoBehaviour
             DialogueLine line = currentNode.lines[currentLineIndex];
             speakerNametext.text = line.speakerName;
 
-            // Nếu đúng node 1 và dòng thứ 2:
-            if ( currentLineIndex == 1)
+            // Nếu đúng node có tên "Act1-Node1" và dòng thứ 2:
+            if (currentLineIndex == 1 && currentNode.name == "Act1-Node1")
             {
                 // Chạy animation "rotate" cho rightImage
                 Playanimation(DialogueAnimation.Rotating, rightImage);
-                Debug.Log("Đã chạy animation 'rotate' cho rightImage");
+                Debug.Log("Đã chạy animation 'rotate' cho rightImage tại Act1-Node1 dòng 2");
             }
 
             // Target Image to be placed from line
             Image targetImage = GetTargetImage(line.targetImage);
 
-            if (targetImage != null && line.characterSprites!=null)
+            if (targetImage != null && line.characterSprites != null)
             {
                 targetImage.sprite = line.characterSprites;
                 targetImage.color = Color.white;
@@ -152,7 +158,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(textSpeed);
         }
         // "<color=red>name></color>" <b></b> <i></i> <u></u>
-        
+
         isTyping = false; // Mark Typing As Finished
     }
 
@@ -183,7 +189,7 @@ public class DialogueManager : MonoBehaviour
         if (isTyping)
         {
             // Skip Typing
-            StopAllCoroutines ();
+            StopAllCoroutines();
             // Show Full Text Line
             DialogueLine currentLine = currentNode.lines[currentLineIndex];
             dialogueText.text = currentLine.text; // Assign the full text
@@ -256,12 +262,12 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    void Playanimation (DialogueAnimation animationType, Image targetImage)
+    void Playanimation(DialogueAnimation animationType, Image targetImage)
     {
         if (targetImage == null) return;
         // Get the Animator component
         Animator animator = targetImage.GetComponent<Animator>();
-        if (animator != null) return;
+        if (animator == null) return;
 
         // Trigger the correct animation
         switch (animationType)
@@ -301,7 +307,3 @@ public class DialogueManager : MonoBehaviour
     }
 
 }
-
-
-
-
